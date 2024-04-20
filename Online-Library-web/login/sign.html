@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sign-in </title>
+<link rel="stylesheet" href="sign_in.css">
+    </head>
+<body>
+<div class="box1">
+    <div class="form-wrapper sign-in">
+        <form action="">
+            <h1>Sign-in</h1>
+            <div class="input-group">
+                <input type="text" required value="Enter name" id ="usernameInput">
+                <label for="">Username</label>
+            </div>
+            <div class="input-group">
+                <input type="password" required minlength="10" maxlength="20" value="Enter Password" id="passwordInput">
+                <label for="">Password</label>
+
+            </div>
+            <div class="remember">
+                <label><input type="checkbox"> Remember me</label>
+            </div>
+            <button type="submit" onclick="handleLogin()">login</button>
+            <div class="signup">
+                <p>Don't have an account? <a href="#" class="signup-btn">Sign-up</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="box2">
+    <div class="form-wrapper sign-Up">
+        <form action="">
+            <h1>Sign-Up</h1>
+            <div class="input-group">
+                <input type="text" required>
+                <label for="" value="" id = "Username">Username</label>
+            </div>
+            <div class="input-group">
+                <input type="email" required>
+                <label for="" value="" id = "email">Email</label>
+            </div>
+            <div class="input-group">
+                <input type="password" required minlength="10" maxlength="20">
+                <label for="" value="" id = "pass">Password</label>
+            </div>
+            <div class="input-group">
+                <input type="password" required show minlength="10" maxlength="20">
+                <label for="">Confirm Password</label>
+            </div>
+            <div class="input-group">
+                <div class="age"><input  type="number" required min="18" max="100">
+                    <label for="" value="" id = "age">Age</label>
+                </div>
+            </div>
+            <div class="input-group">
+                <input type="tel" required minlength="10" maxlength="15">
+                <label for="" value="" id = "phone">Phone Number</label>
+            </div>
+            <div class="remember">
+                <label> <input type="checkbox" value="none" id="check"> Sign as Admin</label>
+                <label> <input type="checkbox" required> I agree to the terms & conditions</label>
+            </div>
+            <button type="submit" onclick="add()">Sign Up</button>
+            <div class="signIn">
+                <p>Already have an account? <a href="#" class="signIn-btn">Sign-In</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+    <script >
+        user=[
+            {
+                username:"osama",
+                pass:"osama123456",
+                age:12,
+                email:"om98@gamil.com",
+                phone:"01129582150",
+                type :'user',
+                books:[]
+            }
+        ]
+        localStorage.setItem('users',JSON.stringify(user));
+        
+        let users = JSON.parse(localStorage.getItem('users'));
+        let User;
+        
+        function search(username, password) {
+            User = users.find(user => user.username === username && user.pass === password);
+            return User !== undefined;
+        }
+        
+        function handleLogin() {
+            console.log(users)
+            const passwordInput = document.getElementById('pass').value;
+            const usernameInput = document.getElementById('usernameInput').value;
+            
+            
+            if (search(usernameInput, passwordInput)) {
+                
+                if (User.type == 'admin') {
+                    window.location.href = `main_admin.html?id=${User.id}`;
+                } else {
+                    console.log('ss');
+                    window.location.href='./main_user.html';
+                    
+                }
+            } else {
+            alert('Invalid username or password');
+        }
+    }
+    
+    function add()
+    {
+        let users = JSON.parse(localStorage.getItem('users'));
+        const usernameInput = document.getElementById('Username').value;
+        const passwordInput = document.getElementById('pass').value;
+        const Email = document.getElementById('email').value;
+        const Phone = document.getElementById('phone').value;
+        const Age = document.getElementById('age').value;
+        const check = document.getElementById('check').value;
+        let admin;
+        if(check.checked)
+         admin='admin';
+        else
+        admin='user';
+        newuser = [
+           { username:usernameInput,
+                pass:passwordInput,
+                age:Age,
+                email:Email,
+                phone:Phone,
+                type :admin,
+                books:[]
+            }
+        ]
+        users.push(newuser);
+        localStorage.setItem('users',JSON.stringify(users));
+    }
+    const signinbutton = document.querySelector('.signIn-btn');
+    const signup = document.querySelector('.signup-btn');
+    const box1 = document.querySelector('.box1');
+    const box2 = document.querySelector('.box2');
+
+    signup.addEventListener('click', () => {
+        box1.classList.toggle('active');
+        box2.style.display = 'block';
+        box1.style.display='none'
+    });
+
+    signinbutton.addEventListener('click', () => {
+        box2.classList.toggle('active');
+        box1.style.display='block';
+        box2.style.display='none';
+
+
+        
+    });
+    document.querySelectorAll('input[type="tel"]').forEach(input => {
+        input.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    });
+
+</script>
+
+    </body>
+</html>

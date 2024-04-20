@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Details</title>
+  <link rel="stylesheet" href="bookdetails.css">
+</head>
+<body>
+ <nav class="nav">
+    <a href="main_user.html" class="Home">Home</a>
+    <a href="userprofile.html" class="profile">User profile</a>
+    <a href="borrowed_books.html" class="Borrowed">Borrowed Books</a>
+    <a href="BorrowBook.html" class="Borrow">Borrow Books</a>
+    <a href="../login/sginout.html" class="signout">Sign out</a>
+    </nav>
+  <div id="bookInfo"></div>
+  <br><br><br><br>
+  <div class="footer">
+          <a href="">إتفاقية الإستخدام</a> &nbsp; &nbsp;
+          <a href="">سياسة الخصوصية</a> &nbsp; &nbsp;
+          <a href="">عن المكتبة</a> &nbsp; &nbsp;
+          <a href="">أتصل بنا</a> &nbsp; &nbsp;
+          <a href="">تبرع للمكتبة</a> &nbsp; &nbsp;
+    </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookSearch = urlParams.get('id');
+    let bookDetails;
+
+    let books = JSON.parse(localStorage.getItem('books'));
+    console.log(books);
+function searchBook(query) {
+  const isIdSearch = !isNaN(query);
+  const foundBook = books.find(book => {
+    if (isIdSearch) {
+      return book.id === query;
+    } else {
+      return book.title.toLowerCase().includes(query.toLowerCase());
+    }
+  });
+
+  bookDetail= foundBook; 
+}
+
+searchBook(bookSearch);
+display(bookDetails);
+   
+function display()
+{
+
+  const bookInfoDiv = document.getElementById('bookInfo');
+  if (bookDetail) {
+    const bookInfoHTML = `
+    <div class="img"> <img src=${bookDetail.imgLink} class="photo"></div>
+    <h2 class="tittle">${bookDetail.title}</h2>
+    <p class= "Author">Author: &nbsp; &nbsp${bookDetail.author}</p>
+    <p class= "Year">Year:&nbsp; &nbsp${bookDetail.year}</p>
+    <p class= "Description">Description:&nbsp${bookDetail.description}</p>
+    <p class= "lan">Languages:&nbsp${bookDetail.lan}</p>
+    <p class= "numberofpage">NumbverPage: &nbsp; &nbsp${bookDetail.NumberPage}
+      <a href="../coverpage.pdf" download="cover.pdf class="download">
+        <button>Download PDF</button></p></a>
+        `;
+        bookInfoDiv.innerHTML = bookInfoHTML;
+      } else {
+        bookInfoDiv.innerHTML = "<p>Book details not found.</p>";
+      }
+  }
+
+
+  </script>
+</body>
+</html>

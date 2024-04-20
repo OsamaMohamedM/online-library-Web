@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Borrow_Book</title>
+<link rel="stylesheet" href="BorrowBook.css">
+</head>
+<body>
+    <nav class="nav">
+        <a href="main_user.html " class="Borrow">Home</a>
+        <a href="userprofile.html" class="profile">User Profile</a>
+        <a href="borrowed_books.html" class="Borrowed">Borrowed Books</a>
+        <a href="../login/sginout.html" class="signout">Sign out</a>
+    </nav>  
+<div class="parent">
+  <form>
+    <h2>Borrow_Book</h2>
+    <div class="Form">
+      <label for="BookId">BookName:</label>
+      <input type="text" id="BookId" name="BookId" placeholder="Enter Name of Book or its ID">
+    </div>
+    
+    <button type="button" onclick="borrowBook()">Borrow</button>
+  </form>
+
+</div>
+  <div class="footer">
+          <a href="">إتفاقية الإستخدام</a> &nbsp; &nbsp;
+          <a href="">سياسة الخصوصية</a> &nbsp; &nbsp;
+          <a href="">عن المكتبة</a> &nbsp; &nbsp;
+          <a href="">أتصل بنا</a> &nbsp; &nbsp;
+          <a href="">تبرع للمكتبة</a> &nbsp; &nbsp;
+    </div>
+
+<script>
+    function borrowBook() {
+        const bookIdValue = document.getElementById('BookId').value;
+        window.location.href = `bookdetails.html?id=${bookIdValue}`;
+    }
+</script>
+
+</body>
+</html>
