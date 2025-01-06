@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>edit book</title>
+    <link rel="stylesheet" href="{% static 'css/Add-Edit-book.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css'%}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="{% url 'main_admin.html' %}" >Home &nbsp;&nbsp;&nbsp;</a></li>
+            <li><a href="{% url 'addbook.html'%}" >Add Book &nbsp;&nbsp;&nbsp;</a></li>
+             <li><a href="{% url 'Edit.html'%}" >Edit Book &nbsp;&nbsp;&nbsp;</a></li>
+             <li><a href="{% url 'delete.html'%}">Delete Book &nbsp;</a></li>
+            <li><a href="{% url 'library.html' %}"  class="signout">signout</a></li>
+        </ul>    
+    </nav>
+    <br><br>
+    <form class="add-form" method="post">
+        {%csrf_token%}
+        <h2>Edit Book</h2>
+        <label for="book-id">Book Id:</label>
+        <input id="book-id" type="text" placeholder="Type a numeric id" required class="book-id" value="" name="id">
+        <br><br>
+        <label for="book-type-list">Change book type:</label>
+
+        <select id="book-type-list" class="book-type-list" name="category">
+            <option value="Fiction">Fiction</option>
+            <option value="Science Fiction">Science Fiction</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="Historical">Historical</option>
+            <option value="Horror">Horror</option>
+            <option value="Romance">Romance</option>
+            <option value="Mystery">Mystery</option>
+        </select>
+
+        <br><br>
+        <label for="book-name">Book Name: </label>
+        <input type="text" id="book-name" value="" class="book-name" name="tittle">
+        <br><br>
+        <label for="author-name">Author Name: </label>
+        <input type="text" id="author-name" required class="author-name" value="" name="author">
+        <br><br>
+        <label for="book-description">Book Description </label>
+        <textarea id="book-description" rows="10" cols="40" placeholder="About book" value=""
+            class="book-description" name="des"></textarea>
+        <br><br>
+        <label for="lan">langue</label>
+        <input type="text" id="lan" required value="" class="book-quote" name="lang">
+        <br><br>
+        <label for="book-upload">Upload Book:</label>
+        <input type="file" id="book-upload" value="" name="book">
+        <br><br>
+        <label for="book-poster">Upload Poster</label>
+        <input type="file" id="book-poster" required value="" name="poster">
+        <br><br>
+        <label for="price"> Price</label>
+        <input type="number" id="price" required value="" name="price">
+        <br><br>
+        <label for="number"> numberofPages</label>
+        <input type="number" id="number" required value="" name="number">
+        <br><br>
+        <label for="year"> year</label>
+        <input type="text" id="year" required value="" name="year">
+        <input type="submit">
+    </form>
+    <script>
+       
+       const urlParams = new URLSearchParams(window.location.search);
+        let bookId = urlParams.get('bookid');
+        let booksArray = JSON.parse('{{ books | escapejs }}') || [];
+        let idx = booksArray.findIndex(book => bookId == book.pk);
+        document.getElementById("book-id").value = booksArray[idx].pk;
+        document.getElementById("book-type-list").value = booksArray[idx].fields.category;
+        document.getElementById("book-name").value = booksArray[idx].fields.tittle;
+        document.getElementById("author-name").value = booksArray[idx].fields.author;
+        document.getElementById("book-description").value = booksArray[idx].fields.description;
+        document.getElementById("lan").value = booksArray[idx].fields.language;
+        document.getElementById("price").value = booksArray[idx].fields.price;
+        document.getElementById("number").value = booksArray[idx].fields.num_of_pages;
+        document.getElementById("year").value = booksArray[idx].fields.year;
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sign-in </title>
+<link rel="stylesheet" href="{% static 'css/sign_in.css' %}">
+    </head>
+<body>
+<div class="box1">
+    <div class="form-wrapper sign-in">
+        <form action="" method="GET">
+            <h1>Sign-in</h1>
+            <div class="input-group">
+                <input type="text" required value="" id ="usernameInput">
+                <label for="">Email</label>
+            </div>
+            <div class="input-group">
+                <input type="password" required minlength="10" maxlength="20" value="" id="passwordInput">
+                <label for="">Password</label>
+
+            </div>
+            <div class="remember">
+                <label><input type="checkbox"> Remember me</label>
+            </div>
+            <button type="button" onclick="handleLogin()">login</button>
+            <div class="signup">
+                <p>Don't have an account? <a href="{% url 'signup.html'%}" class="signup-btn">Sign-up</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+    <script >
+        
+        
+        
+    let users = JSON.parse('{{ users|escapejs }}');
+    console.log(users);
+    function search(username, password) {
+    console.log(password);
+   
+
+    let foundUser = users.findIndex(user => user.fields.email == username && user.fields.password == password);
+    console.log(foundUser);
+    return users[foundUser];
+}
+
+        
+
+        function handleLogin() {
+            
+            
+            const passwordInput = document.getElementById('passwordInput').value;
+            const usernameInput = document.getElementById('usernameInput').value;
+           
+            let User =search(usernameInput, passwordInput);
+            
+            console.log(User);
+            if (User) {
+                if (User.fields.type == "admin") {
+                    console.log('dd');
+                    window.location.href = `{% url 'main_admin.html'%}?id=${User.pk}`;                    
+                    console.log(User.pk);
+                } else {
+                    console.log(User.pk);
+                 window.location.href = `{% url 'main_user.html'%}?id=${User.pk}`;                    
+                
+                    }
+                } else {
+                    alert('Invalid username or password');
+        }
+    }
+    
+ 
+
+
+
+    document.querySelectorAll('input[type="tel"]').forEach(input => {
+        input.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    });
+
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Library</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f7f3e7;
+      padding: 0;
+    }
+    #content{
+        width: 380px;
+    position: relative;
+    left: 38%;
+    top: 50%;
+        
+    }
+    a 
+{
+   text-decoration: none;
+   color: #fff;
+
+}
+.nav
+{
+  margin: auto;
+padding: 32px;
+background-color: #564335; 
+position: relative;
+}
+
+
+.Home,
+.Borrow,
+.signout
+{
+  position: absolute;
+padding: 10px;
+margin: 1px;
+transition-duration: .5ms;
+transition-delay: 15ms;
+transition-property: all;
+display: inline;
+font-family: 'Times New Roman', Times, serif;
+top:15px;
+    
+}
+.Home:hover,
+.Borrow:hover,
+.signout:hover
+{
+  background-color: #987861; 
+  transform: translateY(-3px);
+
+}
+
+.Home
+{
+    left: 35px;
+   
+}
+.Borrow
+{
+    left: 176px;
+    
+}
+.signout
+{
+   right: 0px;
+}
+.book-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 43px;
+        margin-top:15px ;
+        padding-top: 7px;
+        border-radius: 10px;
+        background-color: #987861;
+        position: relative;
+        padding: 0.5rem;
+        
+    }
+
+    .book-item button
+    {
+    display: inline;
+    position: absolute;
+    right: 65px;
+    bottom: 10px;
+    }
+    .book-item img
+    {
+        padding: 10px;
+        width: 239px;
+        height: 282px;
+       
+    }
+    p
+    {
+        display: inline;
+        padding:10px ;
+        text-align: center;
+    }
+    .ID
+    {
+        position: absolute;
+        left: 132px;
+        top: -26px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav">
+        <a href="main_user.html" id ="home" class="Home">Home</a>
+        <a href="BorrowBook.html" id="Borrow" class="Borrow">Borrow Books</a>
+        <a href="library.html"  class="signout">signout</a>
+       
+    </nav>
+  </header>
+  <main id="content"></main>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    let userId = urlParams.get('id');
+    let HomeLink = document.getElementById('home');
+      HomeLink.href = `{% url 'main_user.html'%}?id=${userId}`;
+      userId = userId.trimStart();
+    let borrow = document.getElementById('Borrow');
+    borrow.href = `{% url 'borrow.html'%}?id=${userId}`;
+    document.addEventListener("DOMContentLoaded", function () {
+        
+        function displayBorrowedBooks(borrowedBooks) {
+          contentDiv.innerHTML = ""; 
+          const books =JSON.parse('{{ books|escapejs }}');
+            console.log(books);
+          borrowedBooks.forEach((x) => {
+           console.log(x);
+             const print =books.findIndex(book=> book.pk == x);
+              const bookDiv = document.createElement("div");
+              bookDiv.classList.add("book-item");
+              bookDiv.innerHTML = `
+              <div class="details">
+              <p class="ID">Book ID: ${books[print].pk}</p>
+             <div class="image-container">
+            <a href="{% url 'bookDetails.html'%}?bookid=${books[print].pk} ${userId}" id="Img"><img src=/media/${books[print].fields.image} ></a>
+            </div>
+            <p>${books[print].fields.price}$</p>
+             </div>`;
+              contentDiv.appendChild(bookDiv);
+          });
+        }
+     
+       const Users =  JSON.parse('{{ users|escapejs }}');
+       let currentUseridnex =Users.findIndex(user=> user.pk == userId);
+       console.log(Users);
+       console.log(userId);
+      // console.log(currentUseridnex);
+       const contentDiv = document.getElementById("content");
+       
+       if (currentUseridnex!=-1) {
+        const borrowedBooks = Users[currentUseridnex].fields.borrowedBooks;
+        console.log(currentUseridnex);
+        displayBorrowedBooks(borrowedBooks);
+      } else {
+        contentDiv.innerHTML = "<p>User not found.</p>";
+      }
+    });
+  
+  </script>
+</body>
+</html>

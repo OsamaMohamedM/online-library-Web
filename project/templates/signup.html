@@ -1,0 +1,128 @@
+
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sign-up </title>
+<link rel="stylesheet" href="{% static 'css/sign_in.css' %}">
+
+
+</head>
+
+<body>
+
+<div class="box2">
+    <div class="form-wrapper sign-Up">
+        <form action="" method="post">
+            {% csrf_token %}
+            <h1>Sign-Up</h1>
+            <div class="input-group">
+                <input type="text" required id = "Username" value="" name="name">
+             
+                <label for=""  >Username</label>
+            </div>
+            <div class="input-group">
+                <input type="email" required value="" id = "email" name="email">
+               
+                <label for="" >Email</label>
+            </div>
+            <div class="input-group">
+                <input type="password" required minlength="10" maxlength="20" value="" id = "pass" name="pass">
+             
+                <label for="" >Password</label>
+            </div>
+            <div class="input-group">
+                <input type="password" required show minlength="10" maxlength="20" id="Confirm">
+                <label for="">Confirm Password</label>
+            </div>
+            <div class="input-group">
+                <div class="age"><input  type="number" required min="18" max="100" value="" id = "age" name="age">
+                    <label for="" >Age</label>
+                </div>
+            </div>
+            <div class="input-group">
+                <input type="tel" required minlength="10" maxlength="15" value="" id = "phone" name="tel">
+                <label for="" >Phone Number</label>
+            </div>
+            <div class="remember">
+                <label><select id="sgin" class="sgin" name="type">
+                    <option value="admin">admin</option>
+                    <option value="user">user</option>
+                    Sign as Admin</label>
+                <label> <input type="checkbox" required> I agree to the terms & conditions</label>
+            </div>
+            <button type="submit">
+                
+                Sign Up
+            </button>
+            <div class="signIn">
+                <p>Already have an account? <a href="{% url 'sign.html'%}" class="signIn-btn">Sign-In</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+    <script >
+        
+        
+        
+    let users = JSON.parse('{{ users|escapejs }}');
+    console.log(users);
+    function search(username, password) {
+    console.log(password);
+   
+
+    let foundUser = users.findIndex(user => user.fields.email == username && user.fields.password == password);
+    console.log(foundUser);
+    return users[foundUser];
+}
+
+ 
+
+
+
+  
+
+    document.querySelectorAll('input[type="tel"]').forEach(input => {
+        input.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    const passwordInput = document.getElementById('pass');
+    const mail = document.getElementById('email');
+    const emailLabel = document.querySelector('label[for="email"]');
+    const confirmPasswordInput = document.getElementById('Confirm');
+    const passwordLabel = document.querySelector('label[for="pass"]');
+    const confirmPasswordLabel = document.querySelector('label[for="Confirm"]');
+  
+    form.addEventListener('submit', function(event) {
+        const passwordValue = passwordInput.value;
+        const confirmPasswordValue = confirmPasswordInput.value;
+        const emailValue = mail.value;  
+
+        
+        if (passwordValue != confirmPasswordValue) {
+            event.preventDefault();
+            passwordInput.value = '';
+            alert("Passwords do not match");
+            confirmPasswordInput.value = '';
+        }
+
+        const idx = users.findIndex(user => user.fields.email === emailValue);
+        if (idx != -1) {
+            event.preventDefault();
+            mail.value = '';
+            alert("User already exists");
+        }
+    });
+});
+
+
+</script>
+
+    </body>
+</html>

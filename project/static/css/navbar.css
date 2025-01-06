@@ -1,0 +1,145 @@
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh; 
+  display: flex;
+  flex-direction: column;
+  background-color: #f7f3e7;;
+}
+
+.navbar {
+  background-color: #564335; 
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Times New Roman', Times, serif;
+    
+  }
+  #signout
+  {
+    margin: 0px;
+    
+  }
+  .navbar ul {
+    list-style: none;
+
+    margin: 0;
+    padding: 0;
+  }
+  
+
+  .navbar li {
+    display:inline-flex; 
+    margin-left: 20px; 
+  }
+  
+  .navbar a {
+    color: #F7F3E7; 
+    text-decoration: none;
+    display: inline-block; 
+    padding: 10px;
+    margin-right: 10px; 
+    transition: transform 0.2s ease;
+  
+  }
+  
+  .navbar a:hover {
+    background-color: #987861; 
+    transform: translateY(-3px);
+  }
+  .navbar .signout{
+    padding-left:620px;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; 
+    display: flex;
+    flex-direction: column;
+    background-color: #f7f3e7;;
+  }
+  
+  .navbar {
+    background-color: #564335; 
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Times New Roman', Times, serif;
+      
+    }
+    
+    .navbar ul {
+      list-style: none;
+  
+      margin: 0;
+      padding: 0;
+    }
+    
+  
+    .navbar li {
+      display:inline-flex; 
+      margin-left: 20px; 
+    }
+    
+    .navbar a {
+      color: #F7F3E7; 
+      text-decoration: none;
+      display: inline-block; 
+      padding: 10px;
+      margin-right: 10px; 
+      transition: transform 0.2s ease;
+    
+    }
+    
+    .navbar a:hover {
+      background-color: #987861; 
+      transform: translateY(-3px);
+    }
+    .navbar .signout{
+      padding-left:620px;
+    }
+
+
+    
+    .navbar {
+      background-color: #564335; 
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Times New Roman', Times, serif;
+        
+      }
+      
+      .navbar ul {
+        list-style: none;
+    
+        margin: 0;
+        padding: 0;
+      }
+      
+    
+      .navbar li {
+        display:inline-flex; 
+        margin-left: 20px; 
+      }
+      
+      .navbar a {
+        color: #F7F3E7; 
+        text-decoration: none;
+        display: inline-block; 
+        padding: 10px;
+        margin-right: 10px; 
+        transition: transform 0.2s ease;
+      
+      }
+      
+      .navbar a:hover {
+        background-color: #987861; 
+        transform: translateY(-3px);
+      }
+      .navbar .signout{
+        padding-left:620px;
+      }

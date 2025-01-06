@@ -1,0 +1,76 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Borrow_Book</title>
+<link rel="stylesheet" href="{%static 'css\BorrowBook.css'%}">
+</head>
+<body>
+    <nav class="nav">
+        <a href="main_user.html " onclick="go()" id="home" class="Borrow">Home</a>
+        <a href="borrowed_books.html" onclick="go()" id="Borrowed" class="Borrowed">Borrowed Books</a>
+        <a href="{% url 'library.html'%}"  class="signout">signout</a>
+      
+    </nav>  
+<div class="parent">
+  <form>
+    <h2>Borrow_Book</h2>
+    <div class="Form">
+      <label for="BookId">BookName:</label>
+      <input type="text" id="BookId" name="BookId" placeholder="Enter Name of Book or its ID">
+    </div>
+    
+    <button type="button" onclick="borrowBook()">Borrow</button>
+  </form>
+
+</div>
+  <div class="footer">
+          <a href="">إتفاقية الإستخدام</a> &nbsp; &nbsp;
+          <a href="">سياسة الخصوصية</a> &nbsp; &nbsp;
+          <a href="">عن المكتبة</a> &nbsp; &nbsp;
+          <a href="">أتصل بنا</a> &nbsp; &nbsp;
+          <a href="">تبرع للمكتبة</a> &nbsp; &nbsp;
+    </div>
+
+<script>
+      const urlParams = new URLSearchParams(window.location.search);
+      let userId = urlParams.get('id');
+      console.log(userId);
+      userId=userId.trimStart();
+      function go()
+      {
+
+        let HomeLink = document.getElementById('home');
+        HomeLink.href = `{% url 'main_user.html'%}?id=${userId}`;
+        let borrowed = document.getElementById('Borrowed');
+        borrowed.href = `{% url 'borrowed.html' %}?id=${userId}`;
+      }
+    function borrowBook() {
+        let bookIdValue = document.getElementById('BookId').value;
+        console.log(typeof(typeof(bookIdValue)));
+        if(typeof(bookIdValue)=="string")
+        {
+             books=JSON.parse('{{books|escapejs}}')||[];
+             console.log(books);
+
+             idx = books.findIndex(book => book.fields.tittle == bookIdValue  ||book.pk == bookIdValue );
+             console.log(idx);
+             
+             if(idx!=-1)
+             {
+             
+               bookIdValue = books[idx].pk;  
+               window.location.href = `{% url 'bookDetails.html'%}?bookid=${bookIdValue} ${userId}`;
+             }
+             else
+             {
+              alert("does not exist");
+             }
+        }
+      
+    }
+</script>
+
+</body>
+</html>

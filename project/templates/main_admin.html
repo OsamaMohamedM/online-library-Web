@@ -1,0 +1,100 @@
+
+{%extends 'base.html'%}
+{%load static %}
+{%block xx%}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+
+{%endblock%}
+
+{%block content %}
+<nav class="navbar" >
+  <ul>
+    <li><a href="{% url 'main_admin.html' %}" >Home &nbsp;&nbsp;&nbsp;</a></li>
+    <li><a href="{% url 'addbook.html'%}" >Add Book &nbsp;&nbsp;&nbsp;</a></li>
+     <li><a href="{% url 'Edit.html'%}" >Edit Book &nbsp;&nbsp;&nbsp;</a></li>
+     <li><a href="{% url 'delete.html'%}">Delete Book &nbsp;</a></li>
+    <li><a href="{% url 'library.html' %}"  class="signout">signout</a></li>
+</ul>       
+ </nav>
+ {% endblock %}
+
+{%block y%}
+ 
+
+ <script >
+    let booksArray = JSON.parse('{{ books|escapejs }}')
+    let userArray = [];
+
+     console.log(booksArray);
+     console.log(userArray);
+    
+    function populateBooks() {
+    const columns = document.querySelectorAll('.book-details');
+ 
+    console.log(booksArray.length);
+    columns.forEach((column, index) => {
+        if (index >=booksArray.length) {
+          column.parentElement.style.display ='none' ;
+        } else {
+          const book = booksArray[index];
+          console.log(book);
+          column.innerHTML = `
+                  <p class="ID">Book ID: ${book.pk}</p>
+                  <div><a href="{% url 'bookDetails.html'%}?bookid=${book.pk}">
+                    <img src="/media/${book.fields.image}" height="280px">
+                    </a></div>
+                  <p>${book.fields.price}$</p>
+                 
+                    `;
+                  }
+                });
+
+               
+      }
+                
+              populateBooks();
+    
+              
+         
+      function displayBooks(searchResults) {
+      const columns = document.querySelectorAll('.book-details');
+      columns.forEach((column, index) => {
+        
+        if (index >= searchResults.length) {
+         
+          column.parentElement.style.display = 'none';
+        } else {
+          const book = searchResults[index];
+          column.innerHTML = `
+                    <p class="ID">Book ID: ${book.pk}</p>
+                    <div><a href="bookDetails.html?bookid=${book.pk} "><img src="/media/${book.fields.image}" height="280px"></a></div>
+                    <p>${book.fields.price}$</p>
+                    
+                      </a>
+                      `;
+                    }
+      });
+
+      
+    }
+
+    function searchBooks() {
+      const item = document.getElementById('searchInput').value.toLowerCase();
+      console.log(item);
+      const result = booksArray.filter(book =>
+        book.fields.tittle.toLowerCase().includes(item.toLowerCase()) || book.fields.author.toLowerCase().includes(item.toLowerCase()) || book.fields.category.toLowerCase().includes(item.toLowerCase())
+      );
+      console.log('ss');
+      console.log(result);
+
+      if (result.length > 0) {
+        displayBooks(result);
+      } else {
+        const contentDiv = document.getElementById('content');
+        contentDiv.innerHTML = '<h2>No results found.</h2>';
+      }
+    }
+   
+ </script>
+ {%endblock %}
+ 

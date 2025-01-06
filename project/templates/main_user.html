@@ -1,0 +1,169 @@
+{%extends 'base.html'%}
+{%load static %}
+
+{%block xx%}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+{%endblock%}
+{%block content %}
+<nav class="nav">
+  <a href="{% url 'borrowed.html' %}" id="link" class="Borrowed">Borrowed Books</a>
+  <a href="BorrowBook.html?userId=" id ="BorroW" class="Borrow">Borrow Books</a>
+  <a href="{% url 'library.html'%}"  class="signout">signout</a>
+
+ 
+</nav> 
+{%endblock%}
+
+
+
+{%block y%}
+<script>
+  let booksArray = JSON.parse(('{{books|escapejs}}'));
+  let userArray = JSON.parse(('{{ users|escapejs }}'));
+  
+  console.log(booksArray);
+  console.log(userArray);
+  const urlParams = new URLSearchParams(window.location.search);
+  let userId = urlParams.get('id');
+  let userbooks = userArray[userArray.findIndex(user => user.pk == userId)].fields.borrowedBooks;
+  
+  const borrowedBooksLink = document.getElementById('link');
+  borrowedBooksLink.href = `{% url 'borrowed.html' %}?id=${userId}`;
+  const borrowBooksLink = document.getElementById('BorroW');
+  borrowBooksLink.href = `{% url 'borrow.html'%}?userId=${userId}`;
+
+  function populateBooks() {
+      const columns = document.querySelectorAll('.book-details');
+      const filteredBooks = booksArray.filter(book => !userbooks.includes(book.pk));
+      console.log(filteredBooks);
+      columns.forEach((column, index) => {
+          if (index >= filteredBooks.length) {
+              column.parentElement.style.display = 'none';
+          } else {
+              const book = filteredBooks[index];
+              column.innerHTML = `
+                  <p class="ID">Book ID: ${book.pk}</p>
+                  <div><a href="{% url 'bookDetails.html' %}?bookid=${book.pk} ${userId}"><img src="/media/${book.fields.image}" height="280px"></a></div>
+                  <p>${book.fields.price}$</p>
+                  <form method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="book_id" value="${book.pk}">
+                  <input type="hidden" name="user_id" value="${userId}">
+                  <button type="submit" ">Borrow</button>
+                  </form>
+              `;
+          }
+      });
+  }
+
+  function displayBooks(searchResults) {
+      const columns = document.querySelectorAll('.book-details');
+      const filteredBooks = searchResults.filter(book => !userbooks.includes(book.id));
+          
+      columns.forEach((column, index) => {
+          if (index >= filteredBooks.length) {
+              
+              column.parentElement.style.display = 'none';
+          } else {
+            const book = filteredBooks[index];
+            console.log(index);
+            column.innerHTML = `
+            <p class="ID">Book ID: ${book.id}</p>
+            <div><a href="{% url 'bookDetails.html' %}?bookid=${book.pk} ${userId}"><img src="/media/${book.image}" height="280px"></a></div>
+            <p>${book.price}$</p>
+        <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="book_id" value="${book.id}">
+        <input type="hidden" name="user_id" value="${userId}">
+      <button onclick= value="" id="bor" name="but">Borrow</button> 
+        </form>
+            `;
+            column.parentElement.style.display = 'inline-block';
+          }
+      });
+  }
+
+  function searchBooks() {
+      const query = $('#searchInput').val().toLowerCase();
+      $.ajax({
+          url: '{% url "search_books" %}',
+          type: 'GET',
+          data: {
+              query: query
+          },
+          dataType: 'json',
+          success: function(data) {
+              if (data.length > 0) {
+                  displayBooks(data);
+              } else {
+                  $('#books-list').html('<h2>No results found.</h2>');
+              }
+          }
+      });
+  }
+
+  
+  function searchBooks() {
+            const query = $('#searchInput').val().toLowerCase();
+            $.ajax({
+                url: '{% url "search_books" %}',
+                type: 'GET',
+                data: {
+                    query: query
+                },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.length > 0) {
+                      
+                        displayBooks(data);
+                    } else {
+                        $('#books-list').html('<h2>No results found.</h2>');
+                    }
+                }
+            });
+        }
+
+
+
+        $(document).ready(function() {
+            populateBooks();
+
+           
+            $('#searchInput').on('input keyup keydown', function() {
+                searchBooks();
+            });
+        });
+    
+        $(document).ready(function() {
+      $('#borrowButton').click(function(event) { 
+        const userId = $('#userId').val();
+        const bookId = $('#bookId').val();
+
+        $.ajax({
+          url: '{% url "borrowUser.html" %}', 
+          type: 'POST',
+          data: {
+            user_id: userId,
+            book_id: bookId
+          },
+          dataType: 'json',
+          success: function(data) {
+            if (data.success) {
+              
+              $('#borrowMessage').text(data.message);
+              
+              window.location.href = `{% url 'main_user.html'%}?id=${User.pk}`;
+            } else {
+              $('#borrowMessage').text(data.message); 
+            }
+          },
+          error: function(error) {
+            console.error('Error borrowing book:', error);
+            $('#borrowMessage').text('An error occurred. Please try again later.');
+          }
+        });
+      });
+    });
+</script>
+{%endblock y%}

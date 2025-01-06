@@ -1,0 +1,66 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EditBook</title>
+<link rel="stylesheet" href="{%static 'css\navbar.css'%}">
+<link rel="stylesheet" href="{%static 'css\BorrowBook.css'%}">
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="{% url 'main_admin.html' %}" >Home &nbsp;&nbsp;&nbsp;</a></li>
+            <li><a href="{% url 'addbook.html'%}" >Add Book &nbsp;&nbsp;&nbsp;</a></li>
+             <li><a href="{% url 'delete.html'%}">Delete Book &nbsp;</a></li>
+            <li><a href="{% url 'library.html' %}"  class="signout">signout</a></li>
+        </ul>    
+    </nav>
+<div class="parent">
+  <form>
+    <h2>Edit Book</h2>
+    <div class="Form">
+      <label for="BookId">BookId:</label>
+      <input type="text" id="BookId" name="BookId" placeholder="Enter Name of Book or its ID">
+    </div>
+    
+    <button type="button" onclick="borrowBook()">Borrow</button>
+  </form>
+
+</div>
+  <div class="footer">
+          <a href="">إتفاقية الإستخدام</a> &nbsp; &nbsp;
+          <a href="">سياسة الخصوصية</a> &nbsp; &nbsp;
+          <a href="">عن المكتبة</a> &nbsp; &nbsp;
+          <a href="">أتصل بنا</a> &nbsp; &nbsp;
+          <a href="">تبرع للمكتبة</a> &nbsp; &nbsp;
+    </div>
+
+<script>
+    
+    function borrowBook() {
+        let bookIdValue = document.getElementById('BookId').value;
+        let books= JSON.parse(('{{books|escapejs}}'));
+        
+           
+             
+
+             idx = books.findIndex(book => book.pk == bookIdValue );
+             console.log(idx);
+             
+             if(idx!=-1)
+             {
+             
+                 console.log("Ssa");
+               bookIdValue = books[idx].pk;  
+               window.location.href = `{% url 'Edit'%}?bookid=${bookIdValue}`;
+             }
+             else
+             {
+              alert("does not exist");
+             }
+        }
+</script>
+
+</body>
+</html>

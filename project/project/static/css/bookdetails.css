@@ -1,0 +1,167 @@
+body
+{
+  background-color:#f7f3e7;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+#bookInfo {
+background-color: #BB9887;
+position: relative;
+left: 270px;
+top: 30px;
+bottom: 30px;
+font-family: math;
+width: 846px;
+height: 516px;
+overflow: auto;
+border: 2px solid #eee;
+border-radius: 27px;
+overflow-y: hidden;
+}
+.img,
+.Author,
+.Year,
+.Description,
+.lan,
+.numberofpage,
+.price
+{
+    position: absolute;
+    left: 376px;
+    padding: 10px;
+    margin: 10px; 
+    
+}
+.img {
+    display: grid; 
+    left: 60px;
+    top: 52px;
+    width: 200px;
+    height: 100%;
+
+    
+}
+
+.photo {
+    width: 100%;
+    height: auto;
+    max-width: 100%; 
+    max-height: 320px; 
+    object-fit: cover;
+    border-radius:10px;
+}
+button
+{
+  position: absolute;
+  right: 26%;
+  bottom: 116px;
+  border-radius: 20px;
+  width: 250px;
+}
+.Author
+{ top: 131px;}
+.Year
+{top: 174px;}
+.Description
+{
+  top: 285px;
+}
+.numberofpage
+{
+  top: 216px;
+}
+.tittle
+{
+  position: absolute;
+    left: 365px;
+    padding: 10px;
+    margin: 10px; 
+    top:86px;
+}
+.lan
+{
+    top:251px;
+}.price
+{
+  top:318px;
+}
+a {
+text-decoration: none;
+color: #fff;
+}
+
+#Nav {
+
+padding: 32px;
+background-color: #564335; 
+position: relative;
+}
+#home,
+#Borrowed,
+#Borrow, 
+#signout{
+position: absolute;
+padding: 10px;
+margin: 1px;
+transition-duration: .5ms;
+transition-delay: 15ms;
+transition-property: all;
+display: inline;
+font-family: 'Times New Roman', Times, serif;
+top:15px;
+}
+
+#Borrowed:hover,
+#Borrow:hover,
+#home:hover ,
+#signout:hover
+{
+  background-color: #987861; 
+  transform: translateY(-3px); 
+}
+
+#home {
+
+left: 10px;
+}
+
+#Borrowed {
+
+left: 100px;
+}
+
+#Borrow {
+
+left: 240px;
+}
+
+#signout
+{
+  right: 0px;
+}
+
+.footer {
+position: relative;
+left: 0;
+bottom: -10;
+width: 100%;
+background-color: #564335;
+color: #fff;
+padding: 10px;
+text-align: center;
+font-size: 14px;
+}
+
+.footer a {
+color: #fff;
+text-decoration: none;
+font-family:'Times New Roman', Times, serif;
+}
+
+.footer a:hover {
+text-decoration: underline;
+background-color: #987861;
+}

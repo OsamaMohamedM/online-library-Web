@@ -1,0 +1,145 @@
+{%load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Details</title>
+  <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bookdetails.css' %}">
+
+</head>
+<body>
+ <nav class="navbar" id="Nav"> 
+    
+</nav>
+    <div id="bookInfo"></div>
+    <br><br><br><br>
+    <div class="footer">
+      <a href="">إتفاقية الإستخدام</a> &nbsp; &nbsp;
+      <a href="">سياسة الخصوصية</a> &nbsp; &nbsp;
+      <a href="">عن المكتبة</a> &nbsp; &nbsp;
+      <a href="">أتصل بنا</a> &nbsp; &nbsp;
+      <a href="">تبرع للمكتبة</a> &nbsp; &nbsp;
+    </div>
+    
+    <script >
+      const urlParams = new URLSearchParams(window.location.search);
+      const s = urlParams.get('bookid');
+      console.log(s);
+      let x=s.indexOf(' ');
+      console.log(x);
+      let bookSearch;
+      let userId=null;
+      if(x != -1)
+      {
+          bookSearch = s.substr(0,x);
+         userId = s.substr(x+1);
+         console.log(userId);
+       userId = userId.trimStart();
+        console.log( (userId));
+
+        console.log(bookSearch);
+      }
+      else
+      {
+        bookSearch = s; 
+      }
+    let bookDetails;
+    
+    let books = JSON.parse('{{ books|escapejs }}');
+    console.log(books);
+    function searchBook(query) {
+      console.log(query);
+      const isIdSearch = !isNaN(query);
+      const foundBook = books.find(book => {
+        if (isIdSearch) {
+          return book.pk == query;
+        } else {
+          return book.fields.tittle.toLowerCase().includes(query.toLowerCase());
+        }
+      });
+      
+      
+      bookDetail= foundBook; 
+    }
+    
+    searchBook(bookSearch);
+    display(bookDetails);
+    
+    function display()
+    {
+      
+      const bookInfoDiv = document.getElementById('bookInfo');
+      const nav = document.getElementById('Nav');
+      let bookInfoHTML;
+      let Nav;
+      if (bookDetail) {
+         bookInfoHTML = `
+        <div class="img"> 
+          <a herf="/media/${bookDetail.fields.book_link}"    target="_blank"><img src="/media/${bookDetail.fields.image}"class="photo"><\a></div>
+        <h2 class="tittle">${bookDetail.fields.tittle}</h2>
+        <p class= "Author">Author: &nbsp; &nbsp${bookDetail.fields.author}</p>
+        <p class= "Year">Year:&nbsp; &nbsp${bookDetail.fields.year}</p>
+    <p class= "Description">Description:&nbsp${bookDetail.fields.description}</p>
+    <p class= "lan">Languages:&nbsp${bookDetail.fields.language}</p>
+    <p class= "numberofpage">NumbverPage: &nbsp; &nbsp${bookDetail.fields.num_of_pages }</p>
+    <p class= "price">Price: &nbsp; &nbsp${bookDetail.fields.price}</p>
+    `;
+  } else {
+    bookInfoDiv.innerHTML = "<p>Book details not found.</p>";
+  }
+  if(userId!=null)
+  {
+    bookInfoHTML+= `
+       <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="book_id" value="${bookSearch}">
+        <input type="hidden" name="user_id" value="${userId}">
+      <button onclick= value="" id="bor" name="but">Borrow</button> 
+      </form>`;
+    Nav =  `
+    <a href="{% url 'main_user.html'%}" onclick="go()" id="home">Home &nbsp;&nbsp;&nbsp;</a>
+    <a href="BorrowBook.html"onclick="go()"id="Borrow" >BorrowBook&nbsp;&nbsp;&nbsp;</a>
+    <a href="borrowed_books.html"onclick="go()" id="Borrowed" >borrowed_books&nbsp;&nbsp;&nbsp;</a>
+    <a href="library.html"  class="signout" id="signout">signout</a>
+    `;
+    nav.innerHTML=Nav;
+   
+  }
+  else
+  {
+    bookInfoHTML+=`<button onclick="add()" id="bor" name="but" style="display: none;">Borrow</button>`;
+   Nav =  `<ul>
+            <li><a href="{% url 'main_admin.html' %}" >Home &nbsp;&nbsp;&nbsp;</a></li>
+            <li><a href="{% url 'addbook.html'%}" >Add Book &nbsp;&nbsp;&nbsp;</a></li>
+             <li><a href="{% url 'Edit.html'%}" >Edit Book &nbsp;&nbsp;&nbsp;</a></li>
+             <li><a href="{% url 'delete.html'%}">Delete Book &nbsp;</a></li>
+            <li><a href="{% url 'library.html' %}"  class="signout">signout</a></li>
+        </ul>    `;
+              nav.innerHTML=Nav;
+  }
+
+  bookInfoDiv.innerHTML = bookInfoHTML;
+}
+function go()
+{
+    
+   let HomeLink = document.getElementById('home');
+        HomeLink.href = `{% url 'main_user.html'%}?id=${userId}`;
+        let borrow = document.getElementById('Borrow');
+        borrow.href = `{% url 'borrow.html'%}?id=${userId}`;
+        let borrowed = document.getElementById('Borrowed');
+        borrowed.href = `{% url 'borrowed.html'%}?id=${userId}`;
+        console.log(bookSearch);
+}
+function add()
+{
+
+    return userId+" "+bookSearch;
+    
+  }
+
+  </script>
+</body>
+</html>
